@@ -4,35 +4,64 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    Animator anim;
+    SpriteRenderer sr;
+    private Vector2 lastMoveDirection;
+    private bool facingleft = true;
+
+    
     private Rigidbody2D rb2d;
-    private float direction;
+    private Vector2 input;
     private float speed = 8f;
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        if (rb2d != null)
-        {
-            gameObject.AddComponent<Rigidbody2D>();
-        }
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     private void Update()
     {
-        UpdatePosition();
-        SetDirection(Input.GetAxisRaw("Horizontal");
+        ProcessInput();
+        Animate();
+        Flip();
+    }
+    private void FixedUpdate()
+    {
+        rb2d.velocity = input * speed;
     }
 
-    private void UpdatePosition()
+    void ProcessInput()
     {
-        Vector2 velocity = rb2d.velocity;
-        velocity.x = direction * speed;
-        rb2d.velocity = velocity;
+        float movex = Input.GetAxisRaw("Horizontal");
+        float movey = Input.GetAxisRaw("Vertical");
+        if ((movex == 0 && movey ==0) && (input.x != 0 || input.y != 0))
+        {
+            lastMoveDirection = input;
+        }
+        input.x = Input.GetAxisRaw("Horizontal");
+        input.y = Input.GetAxisRaw("Vertical");
+
+        input.Normalize();
     }
 
-    private void SetDirection(float direction)
+    void Animate()
     {
-        this.direction = direction;
+        anim.SetFloat("MoveX", input.x);
+        anim.SetFloat("MoveY", input.y);
+        anim.SetFloat("MoveMagnitude", input.magnitude);
+        anim.SetFloat("LastMoveX", lastMoveDirection.x);
+        anim.SetFloat("LastMoveY", lastMoveDirection.y);
+    }
+
+    void Flip()
+    {
+        if(facingleft)
+        {
+            sr.flipX = true;
+        }
+        else sr.flipX = false;
     }
 }
+
