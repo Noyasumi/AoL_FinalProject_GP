@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
     Animator anim;
     SpriteRenderer sr;
+    Rigidbody2D rb2d;
+
+    [SerializeField] int jumpPower = 10;
+    [SerializeField] float speed = 8f;
+    private Vector2 input;
     private Vector2 lastMoveDirection;
     private bool facingleft = true;
-
-    
-    private Rigidbody2D rb2d;
-    private Vector2 input;
-    private float speed = 8f;
+    public bool isGrounded;
 
     private void Awake()
     {
@@ -25,43 +24,49 @@ public class Movement : MonoBehaviour
     {
         ProcessInput();
         Animate();
-        Flip();
+        if (input.x < 0 && !facingleft || input.x > 0 && facingleft)
+        {
+            Flip();
+        }
+
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            rb2d.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+            Debug.Log("JUMP triggered");
+        }
     }
+
     private void FixedUpdate()
     {
-        rb2d.velocity = input * speed;
+        rb2d.velocity = new Vector2(input.x * speed, rb2d.velocity.y);
     }
 
     void ProcessInput()
     {
         float movex = Input.GetAxisRaw("Horizontal");
-        float movey = Input.GetAxisRaw("Vertical");
-        if ((movex == 0 && movey ==0) && (input.x != 0 || input.y != 0))
+
+        if ((movex == 0) && (input.x != 0))
         {
             lastMoveDirection = input;
         }
-        input.x = Input.GetAxisRaw("Horizontal");
-        input.y = Input.GetAxisRaw("Vertical");
 
+        input.x = movex;
         input.Normalize();
     }
 
     void Animate()
     {
         anim.SetFloat("MoveX", input.x);
-        anim.SetFloat("MoveY", input.y);
         anim.SetFloat("MoveMagnitude", input.magnitude);
         anim.SetFloat("LastMoveX", lastMoveDirection.x);
-        anim.SetFloat("LastMoveY", lastMoveDirection.y);
     }
 
     void Flip()
     {
-        if(facingleft)
+        if (facingleft)
         {
             sr.flipX = true;
         }
         else sr.flipX = false;
     }
 }
-
