@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
-    [SerializeField]  private Movement CharaMovement;
+    [SerializeField]  private PlayerScript CharaMovement;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         CharaMovement.isGrounded = true;

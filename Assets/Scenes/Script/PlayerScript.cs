@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {
     Animator anim;
     SpriteRenderer sr;
@@ -13,8 +13,11 @@ public class Movement : MonoBehaviour
     private bool facingleft = true;
     public bool isGrounded;
 
+    private Vector3 defaultPos;
+
     private void Awake()
     {
+        defaultPos = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -68,5 +71,10 @@ public class Movement : MonoBehaviour
             sr.flipX = true;
         }
         else sr.flipX = false;
+    }
+
+    public void CharacterDie()
+    {
+        transform.position = defaultPos;
     }
 }
