@@ -10,6 +10,11 @@ public class GroundCheck : MonoBehaviour
         CharaMovement.isGrounded = true;
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        CharaMovement.isGrounded = true;
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         CharaMovement.isGrounded = false;
