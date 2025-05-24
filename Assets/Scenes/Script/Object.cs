@@ -27,7 +27,8 @@ public class Object : MonoBehaviour
     }
 
     public void KillCharacter()
-    {
+    { 
+        Debug.Log("Killing Character");
         GameObject.FindAnyObjectByType<PlayerScript>().CharacterDie();
     }
 
