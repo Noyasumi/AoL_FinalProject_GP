@@ -1,8 +1,8 @@
 <!-- UNITY CODE ASSIST INSTRUCTIONS START -->
-- Project name: Kucing
+- Project name: AoL_FinalProject_GP
 - Unity version: Unity 2021.3.45f1
 - Active game object:
-  - Name: SpikeTile
+  - Name: Setting
   - Tag: Untagged
-  - Layer: Default
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
